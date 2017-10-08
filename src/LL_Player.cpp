@@ -46,12 +46,7 @@
 
 LL_Player::LL_Player(int baudrate) : _musicPlayer(SHIELD_RESET, SHIELD_CS, SHIELD_DCS, DREQ, CARDCS) {
   _baudrate = baudrate;
-}
-
-int LL_Player::returnNumber() {
-
-  return 2;
-
+  _currentTrackNumber = 0;
 }
 
 void LL_Player::printDirectory(File dir, int numTabs) {
@@ -122,8 +117,44 @@ void LL_Player::printDirectory(File dir, int numTabs) {
 
  }
 
+/************************************************************/
+/* Custom methods for assignment */
 
-//Callbacks for Adafruits class
+//Tell which grenre we want to play
+void LL_Player::setGenre(String genre) {
+  _currentGenre = genre;
+  _currentTrackNumber = 1; //Reset track nr
+}
+
+//Play contrinous in background from one genre
+
+void LL_Player::continousPlay() {
+  String filepath = getNextTrackName();
+  const char * pointertofile = filepath.c_str(); //Beware pointer and conversion magic
+  startPlayingFile(pointertofile);
+}
+
+void LL_Player::updateTrackPlaying() {
+  if(!isPlayingMusic()) {
+    continousPlay();
+    Serial.println("Tracked stopped, playing next track");
+  }
+}
+
+//Genrate file names
+String LL_Player::getNextTrackName() {
+  _currentTrackNumber = _currentTrackNumber + 1;
+  String result = _currentGenre + "/" + _currentTrackNumber + ".mp3";
+  Serial.print("Next track name is: ");
+  Serial.println(result);
+  return result;
+}
+
+
+
+
+/************************************************************/
+/* Callbacks for Adafruits class */
 
  boolean LL_Player::useInterrupt(uint8_t type) {
    return _musicPlayer.useInterrupt(type);
@@ -167,4 +198,8 @@ void LL_Player::printDirectory(File dir, int numTabs) {
 
  void LL_Player::resumePlaying() {
    _musicPlayer.pausePlaying(false);
+ }
+
+ void LL_Player::setVolume(uint8_t left, uint8_t right) {
+   _musicPlayer.setVolume(left, right);
  }

@@ -28,10 +28,19 @@ void setup() {
   }
 
   setupLLPlayer();
-
+  llplayer.setGenre("dukkedak"); //Can be done continous
+  llplayer.continousPlay(); // SHOULD ONLY BE DONE ONCE OR WHEN CHANGING GENRE
 }
 
+
 void loop() {
+
+delay(10);
+llplayer.updateTrackPlaying();
+
+
+
+/*
   // Play one file, don't return until complete
   Serial.println(F("Playing track 001"));
   llplayer.playFullFile("track001.mp3");
@@ -46,16 +55,15 @@ void loop() {
   Serial.println(llplayer.paused());
   delay(5000);
   llplayer.resumePlaying();
+*/
+
 }
 
 void setupLLPlayer() {
-
   if(!llplayer.begin()) {
     ; //The Adafruit VS1053 shield is not configured correctly. Halt here.
     while(1);
   };
-
-
 }
 
 
