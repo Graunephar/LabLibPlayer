@@ -47,25 +47,26 @@ void setup() {
 
 void loop() {
 
-delay(10);
- /*
- * PRO TIP: Use millis not delays in your code
- * Otherwise continous track update will not happen ;) */
+  delay(10);
 
- llplayer.updateTrackPlaying(); //should be called continbously in order to guarante continous play.
+   /*
+   * PRO TIP: Use millis not delays in your code
+   * Otherwise continous track update will not happen ;) */
 
- //Changing genre after 60 seconds
- if(millis() > timestamp + DELAY) {
-   String newgenre = randomGenrePicker();
-   llplayer.startContinousPlay(newgenre); // Start playing from new genre
-   timestamp = millis();
-}
+   llplayer.updateTrackPlaying(); //should be called continbously in order to guarante continous play.
+
+   //Changing genre after 60 seconds
+   if(millis() > timestamp + DELAY) {
+     String newgenre = randomGenrePicker();
+     llplayer.startContinousPlay(newgenre); // Start playing from new genre
+     timestamp = millis();
+  }
 
 }
 
 //Pick a random genre from an array of genres
 String randomGenrePicker() {
-  int rando = random(0, nrOfGenres + 1); //Generate random nr netween 0 and the size of the playlist
+  int rando = random(0, nrOfGenres); //Generate random nr netween 0 and the size of the playlist
   Serial.print("New Genre picked: ");
   Serial.println(genres[rando]);
   return genres[rando];

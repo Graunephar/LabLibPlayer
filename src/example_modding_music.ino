@@ -59,8 +59,6 @@ void setup() {
   // Play one file, don't return until complete
   Serial.println(F("Playing First track"));
   musicPlayer.startPlayingFile("long.mp3");
-
-
 }
 
 void loop() {
