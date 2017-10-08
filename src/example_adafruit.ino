@@ -15,9 +15,15 @@
 // include SPI, MP3 and SD libraries
 #include "LL_Player.h"
 
-
 #define BAUDRATE 9600 // The baudrate used by llplayer to send error messeges
+#define DELAY 60000 // If you choose new genres to wuickly things will crash
+
 LL_Player llplayer = LL_Player(BAUDRATE);
+
+unsigned long timestamp = millis();
+
+String genres[] = {"jazz", "dakkeduk", "hip-hop"};
+const int nrOfGenres = 3; //The number of genres in playlist
 
 void setup() {
 
@@ -27,9 +33,11 @@ void setup() {
   ; // wait for serial port to connect. Needed for native USB port only
   }
 
+  randomGenrePicker();
   setupLLPlayer();
 
-  llplayer.startContinousPlay("dakkeduk"); // SHOULD ONLY BE DONE ONCE OR WHEN CHANGING GENRE
+  llplayer.startContinousPlay("hip-hop"); // Start playing from new genre
+
 }
 
 
@@ -42,25 +50,21 @@ delay(10);
 
  llplayer.updateTrackPlaying(); //should be called continbously in order to guarante continous play.
 
+ //Changing genre after 60 seconds
+ if(millis() > timestamp + DELAY) {
+   String newgenre = randomGenrePicker();
+   llplayer.startContinousPlay(newgenre); // Start playing from new genre
+   timestamp = millis();
+}
 
+}
 
-/*
-  // Play one file, don't return until complete
-  Serial.println(F("Playing track 001"));
-  llplayer.playFullFile("track001.mp3");
-  // Play another file in the background, REQUIRES interrupts!
-  Serial.println(F("Playing track 002"));
-  llplayer.startPlayingFile("track002.mp3");
-  Serial.print("IS PLAYING: ");
-  Serial.println(llplayer.isPlayingMusic());
-  delay(10000);
-  llplayer.pausePlaying();
-  Serial.print("PAUSED STATUS: ");
-  Serial.println(llplayer.paused());
-  delay(5000);
-  llplayer.resumePlaying();
-*/
-
+//Pick a random genre from an array of genres
+String randomGenrePicker() {
+  int rando = random(0, nrOfGenres + 1); //Generate random nr netween 0 and the size of the playlist
+  Serial.print("New Genre picked: ");
+  Serial.println(genres[rando]);
+  return genres[rando];
 }
 
 void setupLLPlayer() {

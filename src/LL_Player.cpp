@@ -128,6 +128,7 @@ void LL_Player::setGenre(String genre) {
 
 //Play contrinous in background from one genre
 void LL_Player::startContinousPlay(String genre) {
+    stopPlaying(); // Stop last plating track
     setGenre(genre);
    _genrePlaylistSize = countFilesInDir(_currentGenre);
    Serial.print("Playlist size: ");
@@ -150,6 +151,7 @@ void LL_Player::updateTrackPlaying() {
   }
 }
 
+//Calculates if the playlist is empty
 boolean LL_Player::isPlaylistEmpty(){
   return _currentTrackNumber > _genrePlaylistSize;
 }
@@ -163,20 +165,20 @@ String LL_Player::getNextTrackName() {
   return result;
 }
 
-int LL_Player::countFilesInDir(String directoryname) {
-  File dir = SD.open(directoryname);
 
+int LL_Player::countFilesInDir(String directoryname) {
+
+  File dir = SD.open(directoryname);
   int count = 0;
 
   while(true) {
-
      File entry =  dir.openNextFile();
      if (! entry) {
        // no more files
-       //Serial.println("**nomorefiles**");
        break;
      }
-     count++;
+
+     count++; // Count file found
      entry.close();
     }
 
