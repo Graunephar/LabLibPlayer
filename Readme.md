@@ -28,9 +28,9 @@ In order to make the setup as easy as all the required .cpp and .h files (includ
 ## Documentation of methods
 
 ## Constructor
-'''c++
+```c++
 LL_Player(int baudrate);
-'''
+```
 Constructor, makes a new LL player object
 
 **Parameters**
@@ -40,15 +40,15 @@ int baudrate: The baudrate that the LL_Player will use to write error messages a
 A new LL_Player object
 
 **Example:**
-'''c++
+```c++
 //Make new LL_Player with a baudrate of 9600
 LL_Player musicPlayer = LL_Player(9600);
-'''
+```
 
-s
-'''c++
 
-'''
+```c++
+
+```
 
 **Parameters**
 
