@@ -17,7 +17,7 @@ In order to make the setup as easy as all the required .cpp and .h files (includ
 
 ** Follow the steps below to get the example code running **
 
-4. Press the "Clone or download" button above and download a .zip archive with these files,
+1. Press the "Clone or download" button above and download a .zip archive with these files,
 1. Copy the files from the directory "SD card files" to the root of a micro SD card
 9. Install the shield on top of your Uno or Leonardo
 2. Place the SD card in the shield.
@@ -25,9 +25,9 @@ In order to make the setup as easy as all the required .cpp and .h files (includ
 9. Plug in headphones or speakers and enjoy the sweet music :)
 
 
-##Documentation of methods
+## Documentation of methods
 
-##Constructor
+## Constructor
 '''c++
 LL_Player(int baudrate);
 '''
@@ -45,7 +45,7 @@ A new LL_Player object
 LL_Player musicPlayer = LL_Player(9600);
 '''
 
-
+s
 '''c++
 
 '''
