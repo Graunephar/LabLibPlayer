@@ -136,19 +136,47 @@ void LL_Player::startContinousPlay(String genre) {
    continousPlay();
 }
 
+void LL_Player::skipToNextTrackInGenre() {
+  continousPlay();
+}
+
+//Playes a specific track number
+void LL_Player::skipToTrackNr(int tracknumber) {
+  if(tracknumber > _genrePlaylistSize) {
+    Serial.println("Your nbr is bigger than the tracks you have provided");
+  } else {
+    _currentTrackNumber = tracknumber;
+    playTrack();
+  }
+}
+
 //Continous playing next file
 void LL_Player::continousPlay() {
+  incrementTrackNumber();
+  playTrack();
+  }
+
+//Starts playing the current track in background
+void LL_Player::playTrack() {
   String filepath = getNextTrackName();
   const char * pointertofile = filepath.c_str(); //Beware pointer and conversion magic
   startPlayingFile(pointertofile);
 }
 
+//Updates the track which is playing. Should be called continoiusly
 void LL_Player::updateTrackPlaying() {
   if(!isPlayingMusic()) {
-    if(isPlaylistEmpty()) _currentTrackNumber = 0; // Reset track nr if no more songs
-    continousPlay();
     Serial.println("Tracked stopped, playing next track");
+    continousPlay();
   }
+}
+
+/**
+* Increments track nr
+* Garantees that: nr is never bigger than the playlist size **/
+void LL_Player::incrementTrackNumber() {
+  _currentTrackNumber++;
+  if(isPlaylistEmpty()) _currentTrackNumber = 1; // Reset track nr if no more songs
 }
 
 //Calculates if the playlist is empty
@@ -158,7 +186,6 @@ boolean LL_Player::isPlaylistEmpty(){
 
 //Genrate file names
 String LL_Player::getNextTrackName() {
-  _currentTrackNumber = _currentTrackNumber + 1;
   String result = _currentGenre + "/" + _currentTrackNumber + ".mp3";
   Serial.print("Next track name is: ");
   Serial.println(result);
@@ -244,4 +271,21 @@ void LL_Player::printAllFilesOnSDCard() {
 
  void LL_Player::setVolume(uint8_t left, uint8_t right) {
    _musicPlayer.setVolume(left, right);
+ }
+
+ //Callback for frederiks extensions of Adafruit class
+ void LL_Player::setBassFrequency(uint16_t frequency) {
+   _musicPlayer.setBassFrequency(frequency);
+ }
+
+ void LL_Player::setBassAmplitude(uint16_t amplitude) {
+   _musicPlayer.setBassAmplitude(amplitude);
+ }
+
+ void LL_Player::setTrebleFrequency(uint8_t frequency) {
+   _musicPlayer.setTrebleFrequency(frequency);
+ }
+
+ void LL_Player::setTrebleAmplitude(uint8_t amplitude) {
+   _musicPlayer.setTrebleAmplitude(amplitude);
  }

@@ -16,7 +16,10 @@
 
 // It's not a dick
 ****************************************************/
+
+
 #include <SD.h>
+#include "Adafruit_VS1053.h"
 #include "Adafruit_VS1053.h"
 
 
@@ -37,6 +40,8 @@ public:
   //Custom play methods for course
   void startContinousPlay(String genre); //Play contrinous in background from one genre
   void updateTrackPlaying();
+  void skipToNextTrackInGenre();
+  void skipToTrackNr(int tracknumber);
 
 
   //Debugging
@@ -57,6 +62,12 @@ public:
   void setVolume(uint8_t left, uint8_t right);
   boolean playFullFile(char *trackname);
 
+  //Callback for frederiks extensions of Adafruit class
+  void setBassFrequency(uint16_t frequency);
+  void setBassAmplitude(uint16_t amplitude);
+  void setTrebleFrequency(uint8_t frequency);
+  void setTrebleAmplitude(uint8_t amplitude);
+
 
 private:
   String getNextTrackName();
@@ -65,6 +76,8 @@ private:
   void continousPlay();
   void setGenre(String genre); //Tell which grenre we want to play
   boolean isPlaylistEmpty();
+  void incrementTrackNumber();
+  void playTrack();
 
 
 

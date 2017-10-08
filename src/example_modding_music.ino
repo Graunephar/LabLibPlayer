@@ -19,7 +19,7 @@ Extended for "Lab Lib" by Frederik Kold and Graunephar
                      -sdd`
                    -ydddd`
                  -ydddddd`
-               :ydddddddo                         
+               :ydddddddo
              :ydddddddo`
            :yddddddd+`   yddddd/           :dddddh
          /hddddddd+`     +dddddh-         .hddddds
@@ -33,75 +33,33 @@ Extended for "Lab Lib" by Frederik Kold and Graunephar
 
 
 // include SPI, MP3 and SD libraries
-#include <SPI.h>
-#include <Adafruit_VS1053.h>
-#include <SD.h>
+#include "LL_Player.h"
 
-// define the pins used
-//#define CLK 13       // SPI Clock, shared with SD card
-//#define MISO 12      // Input data, from VS1053/SD card
-//#define MOSI 11      // Output data, to VS1053/SD card
-// Connect CLK, MISO and MOSI to hardware SPI pins.
-// See http://arduino.cc/en/Reference/SPI "Connections"
+#define BAUDRATE 9600 // The baudrate used by llplayer to send error messeges
 
-// These are the pins used for the breakout example
-#define BREAKOUT_RESET  9      // VS1053 reset pin (output)
-#define BREAKOUT_CS     10     // VS1053 chip select pin (output)
-#define BREAKOUT_DCS    8      // VS1053 Data/command select pin (output)
-// These are the pins used for the music maker shield
-#define SHIELD_RESET  -1      // VS1053 reset pin (unused!)
-#define SHIELD_CS     7      // VS1053 chip select pin (output)
-#define SHIELD_DCS    6      // VS1053 Data/command select pin (output)
+LL_Player musicPlayer = LL_Player(BAUDRATE);
 
-// These are common pins between breakout and shield
-#define CARDCS 4     // Card chip select pin
-// DREQ should be an Int pin, see http://arduino.cc/en/Reference/attachInterrupt
-#define DREQ 3       // VS1053 Data request, ideally an Interrupt pin
-
-Adafruit_VS1053_FilePlayer musicPlayer =
-  // create breakout-example object!
-  //Adafruit_VS1053_FilePlayer(BREAKOUT_RESET, BREAKOUT_CS, BREAKOUT_DCS, DREQ, CARDCS);
-  // create shield-example object!
-  Adafruit_VS1053_FilePlayer(SHIELD_RESET, SHIELD_CS, SHIELD_DCS, DREQ, CARDCS);
   int volume = 20;
   int bassAmp = 0;
   int bassFreq = 2;
   int trebleAmp = 0;
   int trebleFreq = 0;
+
 void setup() {
 
-  Serial.begin(115200);
-  Serial.println("Adafruit VS1053 Simple Test");
 
-  if (! musicPlayer.begin()) { // initialise the music player
-     Serial.println(F("Couldn't find VS1053, do you have the right pins defined?"));
-     while (1);
-  }
-  Serial.println(F("VS1053 found"));
+    Serial.begin(BAUDRATE); // we want to use the same baud rate as ll player so we can outout to the same console
 
-   if (!SD.begin(CARDCS)) {
-    Serial.println(F("SD failed, or not present"));
-    while (1);  // don't do anything more
-  }
+    while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+    }
 
-  // list files
-  printDirectory(SD.open("/"), 0);
-
-  // Set volume for left, right channels. lower numbers == louder volume!
-  musicPlayer.setVolume(20,20);
-  musicPlayer.sciWrite(VS1053_REG_BASS, 0);
-
-  // Timer interrupts are not suggested, better to use DREQ interrupt!
-  //musicPlayer.useInterrupt(VS1053_FILEPLAYER_TIMER0_INT); // timer int
-
-  // If DREQ is on an interrupt pin (on uno, #2 or #3) we can do background
-  // audio playing
-  musicPlayer.useInterrupt(VS1053_FILEPLAYER_PIN_INT);  // DREQ int
-
+    setupLLPlayer();
 
   // Play one file, don't return until complete
-  Serial.println(F("Playing track 001"));
- musicPlayer.startPlayingFile("track002.mp3");
+  Serial.println(F("Playing First track"));
+  musicPlayer.startPlayingFile("long.mp3");
+
 
 }
 
@@ -113,6 +71,7 @@ void loop() {
       delay(10);  // we're done! do nothing...
     }
   }
+
   if (Serial.available()) {
     char c = Serial.read();
 
@@ -193,10 +152,10 @@ void loop() {
     if (c == 'p') {
       if (! musicPlayer.paused()) {
         Serial.println("Paused");
-        musicPlayer.pausePlaying(true);
+        musicPlayer.pausePlaying();
       } else {
         Serial.println("Resumed");
-        musicPlayer.pausePlaying(false);
+        musicPlayer.resumePlaying();
       }
     }
   }
@@ -204,29 +163,10 @@ void loop() {
   delay(100);
 }
 
-
-/// File listing helper
-void printDirectory(File dir, int numTabs) {
-   while(true) {
-
-     File entry =  dir.openNextFile();
-     if (! entry) {
-       // no more files
-       //Serial.println("**nomorefiles**");
-       break;
-     }
-     for (uint8_t i=0; i<numTabs; i++) {
-       Serial.print('\t');
-     }
-     Serial.print(entry.name());
-     if (entry.isDirectory()) {
-       Serial.println("/");
-       printDirectory(entry, numTabs+1);
-     } else {
-       // files have sizes, directories do not
-       Serial.print("\t\t");
-       Serial.println(entry.size(), DEC);
-     }
-     entry.close();
-   }
+//Initializing up all the things in the LL_Player
+void setupLLPlayer() {
+  if(!musicPlayer.begin()) {
+    ; //The Adafruit VS1053 shield is not configured correctly. Halt here.
+    while(1);
+  };
 }

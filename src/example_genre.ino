@@ -1,18 +1,23 @@
-/***************************************************
-  This is an example for the Adafruit VS1053 Codec Breakout
+/****************************************************
+Written for "Lab Lib" by  Graunephar
 
-  Designed specifically to work with the Adafruit VS1053 Codec Breakout
-  ----> https://www.adafruit.com/products/1381
+                       -s`
+                     -sdd`
+                   -ydddd`
+                 -ydddddd`
+               :ydddddddo
+             :ydddddddo`
+           :yddddddd+`   yddddd/           :dddddh
+         /hddddddd+`     +dddddh-         .hddddds
+       /hddddddh+`       `ydddddds:`   `-oddddddh`
+    `/hddddddh+`          `oddddddddddddddddddds`
+  `/hddddddh/`              -sddddddddddddddds-
+`+hddddddh/                   `:oydddddddyo/`
 
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit and open-source hardware by purchasing
-  products from Adafruit!
+// It's not a dick
+****************************************************/
 
-  Written by Limor Fried/Ladyada for Adafruit Industries.
-  BSD license, all text above must be included in any redistribution
- ****************************************************/
 
-// include SPI, MP3 and SD libraries
 #include "LL_Player.h"
 
 #define BAUDRATE 9600 // The baudrate used by llplayer to send error messeges
@@ -33,10 +38,9 @@ void setup() {
   ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  randomGenrePicker();
   setupLLPlayer();
 
-  llplayer.startContinousPlay("hip-hop"); // Start playing from new genre
+  llplayer.startContinousPlay("dakkeduk"); // Start playing from new genre
 
 }
 
@@ -67,12 +71,10 @@ String randomGenrePicker() {
   return genres[rando];
 }
 
+//Initializing up all the things in the LL_Player
 void setupLLPlayer() {
   if(!llplayer.begin()) {
     ; //The Adafruit VS1053 shield is not configured correctly. Halt here.
     while(1);
   };
 }
-
-
-/// File listing helper
