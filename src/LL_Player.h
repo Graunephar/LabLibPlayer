@@ -33,4 +33,18 @@ public:
   void printDirectory(File dir, int numTabs);
   int begin();
 
+
+  //Callback method for Adafruits class
+  boolean useInterrupt(uint8_t type);
+  File getCurrentTrack();
+  boolean isPlayingMusic();
+  void feedBuffer(void);
+  boolean startPlayingFile(const char *trackname);
+  boolean playFullFile(const char *trackname);
+  void stopPlaying(void);
+  boolean paused(void);
+  boolean stopped(void);
+  void pausePlaying();
+  void resumePlaying();
+
 };

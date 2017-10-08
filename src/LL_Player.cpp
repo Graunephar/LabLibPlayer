@@ -118,13 +118,53 @@ void LL_Player::printDirectory(File dir, int numTabs) {
    // audio playing
    _musicPlayer.useInterrupt(VS1053_FILEPLAYER_PIN_INT);  // DREQ int
 
-   // Play one file, don't return until complete
-   Serial.println(F("Playing track 001"));
-   _musicPlayer.playFullFile("track001.mp3");
-   // Play another file in the background, REQUIRES interrupts!
-   Serial.println(F("Playing track 002"));
-   _musicPlayer.startPlayingFile("track002.mp3");
-
     return 1;
 
+ }
+
+
+//Callbacks for Adafruits class
+
+ boolean LL_Player::useInterrupt(uint8_t type) {
+   return _musicPlayer.useInterrupt(type);
+ }
+
+ File LL_Player::getCurrentTrack() {
+   return _musicPlayer.currentTrack;
+ }
+
+ boolean LL_Player::isPlayingMusic() {
+   return _musicPlayer.playingMusic;
+ }
+
+ void LL_Player::feedBuffer(void) {
+   _musicPlayer.feedBuffer();
+ }
+
+ boolean LL_Player::startPlayingFile(const char *trackname) {
+   return _musicPlayer.startPlayingFile(trackname); // Beware of pointer magic!!!
+ }
+
+ boolean LL_Player::playFullFile(const char *trackname) {
+   return _musicPlayer.playFullFile(trackname); //Beware of pointer magic!!
+ }
+
+ void LL_Player::stopPlaying(void) {
+   _musicPlayer.stopPlaying();
+ }
+
+ boolean LL_Player::paused(void) {
+  return _musicPlayer.paused();
+ }
+
+ boolean LL_Player::stopped(void) {
+   return _musicPlayer.stopped();
+ }
+
+ void LL_Player::pausePlaying() {
+   _musicPlayer.pausePlaying(true);
+ }
+
+ void LL_Player::resumePlaying() {
+   _musicPlayer.pausePlaying(false);
  }

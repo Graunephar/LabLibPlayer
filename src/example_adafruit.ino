@@ -32,7 +32,20 @@ void setup() {
 }
 
 void loop() {
-
+  // Play one file, don't return until complete
+  Serial.println(F("Playing track 001"));
+  llplayer.playFullFile("track001.mp3");
+  // Play another file in the background, REQUIRES interrupts!
+  Serial.println(F("Playing track 002"));
+  llplayer.startPlayingFile("track002.mp3");
+  Serial.print("IS PLAYING: ");
+  Serial.println(llplayer.isPlayingMusic());
+  delay(10000);
+  llplayer.pausePlaying();
+  Serial.print("PAUSED STATUS: ");
+  Serial.println(llplayer.paused());
+  delay(5000);
+  llplayer.resumePlaying();
 }
 
 void setupLLPlayer() {
