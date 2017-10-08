@@ -86,7 +86,7 @@ void LL_Player::printDirectory(File dir, int numTabs) {
    }
 
 
-   Serial.println("Adafruit VS1053 Simple Test");
+   Serial.println("Initializing VS1053 shield");
    if (! _musicPlayer.begin()) { // initialise the music player
       Serial.println("Couldnt connect to VS1053.");
       Serial.println("You properbly have a problem with your connections");
@@ -101,7 +101,7 @@ void LL_Player::printDirectory(File dir, int numTabs) {
    }
 
    // list files
-   printDirectory(SD.open("/"), 0);
+   SD.open("/");
 
    // Set volume for left, right channels. lower numbers == louder volume!
    _musicPlayer.setVolume(20,20);
@@ -123,11 +123,19 @@ void LL_Player::printDirectory(File dir, int numTabs) {
 //Tell which grenre we want to play
 void LL_Player::setGenre(String genre) {
   _currentGenre = genre;
-  _currentTrackNumber = 1; //Reset track nr
+  _currentTrackNumber = 0; //Reset track nr
 }
 
 //Play contrinous in background from one genre
+void LL_Player::startContinousPlay(String genre) {
+    setGenre(genre);
+   _genrePlaylistSize = countFilesInDir(_currentGenre);
+   Serial.print("Playlist size: ");
+   Serial.println(_genrePlaylistSize);
+   continousPlay();
+}
 
+//Continous playing next file
 void LL_Player::continousPlay() {
   String filepath = getNextTrackName();
   const char * pointertofile = filepath.c_str(); //Beware pointer and conversion magic
@@ -136,9 +144,14 @@ void LL_Player::continousPlay() {
 
 void LL_Player::updateTrackPlaying() {
   if(!isPlayingMusic()) {
+    if(isPlaylistEmpty()) _currentTrackNumber = 0; // Reset track nr if no more songs
     continousPlay();
     Serial.println("Tracked stopped, playing next track");
   }
+}
+
+boolean LL_Player::isPlaylistEmpty(){
+  return _currentTrackNumber > _genrePlaylistSize;
 }
 
 //Genrate file names
@@ -150,6 +163,33 @@ String LL_Player::getNextTrackName() {
   return result;
 }
 
+int LL_Player::countFilesInDir(String directoryname) {
+  File dir = SD.open(directoryname);
+
+  int count = 0;
+
+  while(true) {
+
+     File entry =  dir.openNextFile();
+     if (! entry) {
+       // no more files
+       //Serial.println("**nomorefiles**");
+       break;
+     }
+     count++;
+     entry.close();
+    }
+
+  return count;
+
+}
+
+/* Debugging methods */
+
+void LL_Player::printAllFilesOnSDCard() {
+  Serial.println("Listing files");
+  printDirectory(SD.open("/"), 0);
+}
 
 
 

@@ -28,15 +28,19 @@ void setup() {
   }
 
   setupLLPlayer();
-  llplayer.setGenre("dukkedak"); //Can be done continous
-  llplayer.continousPlay(); // SHOULD ONLY BE DONE ONCE OR WHEN CHANGING GENRE
+
+  llplayer.startContinousPlay("dakkeduk"); // SHOULD ONLY BE DONE ONCE OR WHEN CHANGING GENRE
 }
 
 
 void loop() {
 
 delay(10);
-llplayer.updateTrackPlaying();
+ /*
+ * PRO TIP: Use millis not delays in your code
+ * Otherwise continous track update will not happen ;) */
+
+ llplayer.updateTrackPlaying(); //should be called continbously in order to guarante continous play.
 
 
 

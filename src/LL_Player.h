@@ -26,18 +26,21 @@ class LL_Player {
   int _baudrate;
   String _currentGenre;
   int _currentTrackNumber;
+  int _genrePlaylistSize;
 
 
 public:
   //Setup methods
   LL_Player(int baudrate);
-  void printDirectory(File dir, int numTabs); //List all stuff on SD card
   int begin();
 
   //Custom play methods for course
-  void setGenre(String genre); //Tell which grenre we want to play
-  void continousPlay(); //Play contrinous in background from one genre
+  void startContinousPlay(String genre); //Play contrinous in background from one genre
   void updateTrackPlaying();
+
+
+  //Debugging
+  void printAllFilesOnSDCard();
 
   //Callback method for Adafruits class
   boolean useInterrupt(uint8_t type);
@@ -57,5 +60,12 @@ public:
 
 private:
   String getNextTrackName();
+  void printDirectory(File dir, int numTabs); //List all stuff on SD card
+  int countFilesInDir(String directoryname);
+  void continousPlay();
+  void setGenre(String genre); //Tell which grenre we want to play
+  boolean isPlaylistEmpty();
+
+
 
 };
