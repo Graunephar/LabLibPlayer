@@ -50,12 +50,11 @@ public:
   //Callback method for Adafruits class
   String getCurrentTrackName();
   boolean isPlayingMusic();
-  void feedBuffer(void);
   boolean startPlayingFile(const char *trackname);
   boolean playFullFile(const char *trackname);
   void stopPlaying(void);
-  boolean paused(void);
-  boolean stopped(void);
+  boolean isPaused(void);
+  boolean isStopped(void);
   void pausePlaying();
   void resumePlaying();
   void setVolume(uint8_t left, uint8_t right);

@@ -234,10 +234,6 @@ void LL_Player::printAllFilesOnSDCard() {
    return _musicPlayer.playingMusic;
  }
 
- void LL_Player::feedBuffer(void) {
-   _musicPlayer.feedBuffer();
- }
-
  boolean LL_Player::startPlayingFile(const char *trackname) {
    return _musicPlayer.startPlayingFile(trackname); // Beware of pointer magic!!!
  }
@@ -250,11 +246,11 @@ void LL_Player::printAllFilesOnSDCard() {
    _musicPlayer.stopPlaying();
  }
 
- boolean LL_Player::paused(void) {
+ boolean LL_Player::isPaused(void) {
   return _musicPlayer.paused();
  }
 
- boolean LL_Player::stopped(void) {
+ boolean LL_Player::isStopped(void) {
    return _musicPlayer.stopped();
  }
 

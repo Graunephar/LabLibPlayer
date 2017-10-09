@@ -150,6 +150,7 @@ String name = llplayer.getCurrentTrackName();
 
 
 ## Check if music is playing
+Checks if the shield is currently playing music
 
 ```c++
 boolean isPlayingMusic()
@@ -165,23 +166,196 @@ true: if music is playing
 ```c++
 if(llplayer.isPlayingMusic()) //Do stuff
 ```
-**Notes**
 
+## Play specific file
 
+Plays a mp3 file with a specific name in the background.
 
-void feedBuffer(void);
+```c++
 boolean startPlayingFile(const char *trackname);
-boolean playFullFile(const char *trackname);
-void stopPlaying(void);
-boolean paused(void);
-boolean stopped(void);
-void pausePlaying();
-void resumePlaying();
-void setVolume(uint8_t left, uint8_t right);
-boolean playFullFile(char *trackname);
+```
 
-//Callback for frederiks extensions of Adafruit class
-void setBassFrequency(uint16_t frequency);
+**Parameters**
+A string (sort of) with a filename (a path) to an mp3 file on the SD card
+
+
+**Example:**
+```c++
+  llplayer.startPlayingFile("long.mp3");
+```
+```c++
+  llplayer.startPlayingFile("dukkedak/djsatan.mp3");
+
+```
+
+**Notes**
+If you want to know about the type of the parameter you can find more info [here](https://www.cs.bu.edu/teaching/cpp/string/array-vs-ptr/)
+
+
+
+## Play full file
+Play a file and does not return control before it is finished. Like startPlayingFile other than the fact that the everything else is "paused" until the file has finished playing.
+
+```c++
+boolean playFullFile(const char *trackname);
+
+```
+
+
+**Parameters**
+A string (sort of) with a filename (a path) to an mp3 file on the SD card
+
+**Example:**
+```c++
+  llplayer.playFullFile("long.mp3");
+```
+```c++
+  llplayer.playFullFile("dukkedak/djsatan.mp3");
+
+```
+
+## Stop Playing
+
+Stops the playback completely
+
+```c++
+void stopPlaying()
+
+```
+
+
+## Check if playback is paused
+
+```c++
+boolean isPaused()
+```
+
+**Returns:**
+A Boolean:
+true: if playback is paused,
+false: if playback is not paused
+
+
+## Check if playback is stopped
+
+```c++
+boolean isStopped();
+```
+
+**Returns:**
+A Boolean:
+true: if playback is paused,
+false: if playback is not paused
+
+
+## Pause Playing
+Pauses the playback
+
+```c++
+void pausePlaying();
+```
+
+## Resume Playing
+Resumes the playback after pause
+
+```c++
+void resumePlaying();
+```
+
+
+## Set Volume
+
+Sets the volume on the left and the right channel
+
+```c++
+void setVolume(int left, int right);
+```
+
+**Parameters**
+An integer between 0 and 255 with the volume that each channel should be playing.
+
+Actually it is of the type uint8_t. Which means it can be no more than 255.
+
+**Example:**
+```c++
+llplayer.setVolume(20, 20);
+```
+
+
+## Set Bass frequency
+Set the frequency on the bass on the track
+
+```c++
+void setBassFrequency(int frequency);
+```
+
+**Parameters**
+An integer with the frequency for the bass.
+Actually it is a uint16_t so it can be no more than 65.536...
+
+**Example:**
+```c++
+llplayer.setBassFrequency(20);
+```
+
+**Notes**
+If you wonder about the strange named integer [this](http://www.cplusplus.com/reference/cstdint/) might explain things
+
+
+## Set Bass amplitude
+Set the amplitude on the bass on the track
+
+```c++
 void setBassAmplitude(uint16_t amplitude);
+```
+
+**Parameters**
+An integer with the amplitude for the bass.
+Actually it is a uint16_t so it can be no more than 65.536...
+
+**Example:**
+```c++
+llplayer.setBassAmplitude(20);
+```
+
+**Notes**
+If you wonder about the strange named integer [this](http://www.cplusplus.com/reference/cstdint/) might explain things
+
+## Set Treble frequency
+Set the frequency on the treble on the track
+
+```c++
 void setTrebleFrequency(uint8_t frequency);
+```
+
+**Parameters**
+An integer with the frequency for treble.
+Actually it is a uint16_t so it can be no more than 65.536...
+
+**Example:**
+```c++
+llplayer.setTrebleFrequency(20);
+```
+
+**Notes**
+If you wonder about the strange named integer [this](http://www.cplusplus.com/reference/cstdint/) might explain things
+
+
+## Set Treble amplitude
+Set the amplitude on the treble on the track
+
+```c++
 void setTrebleAmplitude(uint8_t amplitude);
+```
+
+**Parameters**
+An integer with the amplitude for the treble.
+Actually it is a uint16_t so it can be no more than 65.536...
+
+**Example:**
+```c++
+llplayer.setTrebleAmplitude(20);
+```
+
+**Notes**
+If you wonder about the strange named integer [this](http://www.cplusplus.com/reference/cstdint/) might explain things
