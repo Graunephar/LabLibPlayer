@@ -48,8 +48,7 @@ public:
   void printAllFilesOnSDCard();
 
   //Callback method for Adafruits class
-  boolean useInterrupt(uint8_t type);
-  File getCurrentTrack();
+  String getCurrentTrackName();
   boolean isPlayingMusic();
   void feedBuffer(void);
   boolean startPlayingFile(const char *trackname);

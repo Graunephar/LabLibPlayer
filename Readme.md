@@ -42,39 +42,133 @@ A new LL_Player object
 **Example:**
 ```c++
 //Make new LL_Player with a baudrate of 9600
-LL_Player musicPlayer = LL_Player(9600);
+LL_Player llplayer = LL_Player(9600);
 ```
 
 
-```c++
+## Starts the LL Player
 
+```c++
+int begin();
+
+```
+
+**Returns:**
+0: If something is wrong,
+1: If everything seems correct
+
+**Notes**
+Should be called before trying to do anything else
+
+
+## Start Continous Play
+
+Starts playing music from a subfolder (genre). Continous to play the music as long as updateTrackPlaying is called regularly. When all files in folder is played it will start over.
+
+```c++
+void startContinousPlay(String genre)
 ```
 
 **Parameters**
+A string representing a genre. The string should match a folder with mp3 files on the SD card. The name is case sensitive.
 
-**Returns:**
 
 **Example:**
-'''c++
-'''
+
+```c++
+LL_Player llplayer = LL_Player(9600);
+llplayer.startContinousPlay("dubstep");
+```
+
+## Update track playing
+Checks if no track is playing. If there is no track it plays the next one int he genre folder. Called often to ensure a track is playing.  
+
+```c++
+void updateTrackPlaying();
+```
+
+**Notes**
+__SHOULD__ be called ALL the time. No call = no music  
+
+
+## Skip track
+
+Plays the next track in the genre folder. Plays the first track if there are no tracks left.
+
+
+```c++
+void skipToNextTrackInGenre()
+```
+
+
+## Skip to specific track
+
+Plays a specific track in a genre, if it exists
+
+```c++
+void skipToTrackNr(int tracknumber);
+```
+
+**Parameters**
+An integer with a number between 1 and the number of files in the genre folder.
+
+**Example:**
+```c++
+llplayer.skipToTrackNr(99);
+
+```
+
+**Notes**
+ If number does not exist it writes out an error message to the serial monitor and does nothing. This could probably be done in a more clever way... Meh...
+
+ ## Print all files on SD card
+
+ Does what the name says. Makes debugging easier.
+
+ ```c++
+ void printAllFilesOnSDCard();
+ ```
+
+**Notes**
+The SD cards is formatet with a Fat32 filesystem which means filenames can not be longer that 8 characters. If you need to use this function that is probably the error.  
+
+## Get Name Of Current Track
+
+Gets the name of the track that isn playing
+
+```c++
+String getCurrentTrackName()
+```
+
+**Returns:**
+A String with the name of the track that is playing
+
+**Example:**
+```c++
+String name = llplayer.getCurrentTrackName();
+```
+
+
+## Check if music is playing
+
+```c++
+boolean isPlayingMusic()
+```
+
+**Returns:**
+A boolean
+false: if music is not playing
+true: if music is playing
+
+**Example:**
+
+```c++
+if(llplayer.isPlayingMusic()) //Do stuff
+```
 **Notes**
 
-int begin();
-
-//Custom play methods for course
-void startContinousPlay(String genre); //Play contrinous in background from one genre
-void updateTrackPlaying();
-void skipToNextTrackInGenre();
-void skipToTrackNr(int tracknumber);
 
 
-//Debugging
-void printAllFilesOnSDCard();
-
-//Callback method for Adafruits class
-boolean useInterrupt(uint8_t type);
-File getCurrentTrack();
-boolean isPlayingMusic();
 void feedBuffer(void);
 boolean startPlayingFile(const char *trackname);
 boolean playFullFile(const char *trackname);

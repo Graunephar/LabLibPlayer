@@ -225,12 +225,9 @@ void LL_Player::printAllFilesOnSDCard() {
 /************************************************************/
 /* Callbacks for Adafruits class */
 
- boolean LL_Player::useInterrupt(uint8_t type) {
-   return _musicPlayer.useInterrupt(type);
- }
-
- File LL_Player::getCurrentTrack() {
-   return _musicPlayer.currentTrack;
+ String LL_Player::getCurrentTrackName() {
+   File file = _musicPlayer.currentTrack;
+   return file.name();
  }
 
  boolean LL_Player::isPlayingMusic() {
